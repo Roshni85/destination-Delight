@@ -1,0 +1,141 @@
+<% layout("/layout/layout.ejs") %>
+<title>Create Your Custom Package</title>
+
+
+
+<script>
+    function addItineraryField() {
+        const itineraryContainer = document.getElementById("itineraryContainer");
+        const index = itineraryContainer.children.length;
+
+        const div = document.createElement("div");
+        div.classList.add("input-group", "mb-2");
+        div.innerHTML = `
+            <input type="number" class="form-control" name="itinerary[${index}][day]" placeholder="Day" required>
+            <input type="text" class="form-control" name="itinerary[${index}][activity]" placeholder="Activity" required>
+            <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()"><i class="fas fa-trash-alt"></i></button>
+        `;
+        itineraryContainer.appendChild(div);
+    }
+
+    async function fetchHotels() {
+        const destination = document.getElementById("destination").value;
+        const hotelDropdown = document.getElementById("hotel");
+
+        if (!destination) {
+            hotelDropdown.innerHTML = '<option value="">Select Hotel</option>';
+            return;
+        }
+
+        try {
+            const response = await fetch(`/hotels?destination=${destination}`);
+            const hotels = await response.json();
+
+            hotelDropdown.innerHTML = '<option value="">Select Hotel</option>';
+            hotels.forEach(hotel => {
+                hotelDropdown.innerHTML += `<option value="${hotel.name}">${hotel.name}</option>`;
+            });
+        } catch (error) {
+            console.error("Error fetching hotels:", error);
+        }
+    }
+</script>
+
+<div class="container mt-5">
+    <h2 class="text-center fw-bold">Create Your Custom Package</h2>
+    <p class="text-muted text-center">Fill in the details below to create a personalized travel experience.</p>
+
+    <form action="/packages" method="POST" enctype="multipart/form-data" class="shadow p-4 rounded bg-light">
+        <div class="row">
+            <!-- Package Name -->
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Package Name</label>
+                <input type="text" name="name" class="form-control" placeholder="Enter package name" required>
+            </div>
+
+            <!-- Destination -->
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Destination</label>
+                <select name="destination" id="destination" class="form-select" onchange="fetchHotels()" required>
+                    <option value="">Select Destination</option>
+                    <option value="Goa">Goa</option>
+<option value="Manali">Manali</option>
+<option value="Kerala">Kerala</option>
+<option value="Jaipur">Jaipur</option>
+<option value="Agra">Agra</option>
+<option value="Leh-Ladakh">Leh-Ladakh</option>
+<option value="Varanasi">Varanasi</option>
+<option value="Rishikesh">Rishikesh</option>
+<option value="Andaman-Nicobar">Andaman & Nicobar</option>
+<option value="Mumbai">Mumbai</option>
+<option value="Shimla">Shimla</option>
+<option value="Udaipur">Udaipur</option>
+<option value="Kolkata">Kolkata</option>
+<option value="Hyderabad">Hyderabad</option>
+<option value="Darjeeling">Darjeeling</option>
+<option value="Ooty">Ooty</option>
+<option value="Mysore">Mysore</option>
+<option value="Rann-of-Kutch">Rann of Kutch</option>
+<option value="Hampi">Hampi</option>
+<option value="Shillong">Shillong</option>
+
+                </select>
+            </div>
+
+            <!-- Hotel -->
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Hotel</label>
+                <select name="hotel" id="hotel" class="form-select" required>
+                    <option value="">Select Hotel</option>
+                </select>
+            </div>
+
+            <!-- Duration -->
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Duration</label>
+                <input type="text" name="duration" class="form-control" placeholder="e.g., 5 Nights 6 Days" required>
+            </div>
+
+            <!-- Price -->
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Price (₹)</label>
+                <input type="number" name="price" class="form-control" placeholder="Enter price" required>
+            </div>
+
+            <!-- Transport -->
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Transport</label>
+                <input type="text" name="transport" class="form-control" placeholder="Enter transport details" required>
+            </div>
+        </div>
+
+        <!-- Itinerary Section -->
+        <h4 class="mt-4 fw-bold">Itinerary</h4>
+        <div id="itineraryContainer"></div>
+        <button type="button" class="btn btn-outline-primary mt-2" onclick="addItineraryField()">
+            <i class="fas fa-plus"></i> Add Itinerary
+        </button>
+
+        <!-- Image Upload -->
+        <div class="mb-3 mt-4">
+            <label class="form-label fw-bold">Upload Images</label>
+            <input type="file" name="image" id="img" class="form-control" multiple required>
+        </div>
+
+        <!-- Checkboxes -->
+        <div class="form-check mt-3">
+            <input type="checkbox" name="isSpecialOffer" id="isSpecialOffer" class="form-check-input">
+            <label for="isSpecialOffer" class="form-check-label">Special Offer</label>
+        </div>
+
+        <div class="form-check mt-2">
+            <input type="checkbox" name="isPopular" id="isPopular" class="form-check-input">
+            <label for="isPopular" class="form-check-label">Popular Destination</label>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success px-4 py-2 fw-bold">Save Package</button>
+        </div>
+    </form>
+</div>
