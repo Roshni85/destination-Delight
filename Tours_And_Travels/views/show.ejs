@@ -1,0 +1,120 @@
+<% layout("/layout/layout.ejs") %>
+<title><%= package.name %> - Details</title>
+
+<head>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding-top: 180px; /* Prevents content from hiding under navbar */
+        }
+        .container-23 {
+            max-width: 900px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .carousel-item img {
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .itinerary-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .btn-back {
+            background: #ff4757;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .btn-back:hover {
+            background: #e84118;
+        }
+        /* Ensure content takes full height to prevent footer overlap */
+        .main-content {
+            min-height: calc(100vh - 200px); /* Adjust based on footer height */
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <main class="flex-grow-1 d-flex justify-content-center align-items-center">
+        <div class="container-23">
+            <h1 class="fw-bold mt-3 text-danger"><%= package.name %></h1>
+            <p class="lead"><strong>Destination:</strong> <%= package.destination %></p>
+            <p class="lead"><strong>Duration:</strong> <%= package.duration %></p>
+            <p class="lead"><strong>Price:</strong> ₹<%= package.price %></p>
+
+            <!-- Hotel Info -->
+            <% if (package.hotel) { %>
+                <h3 class="mt-4 text-primary">Hotel</h3>
+                <p class="fs-5"><strong>Name:</strong> <%= package.hotel %></p>
+            <% } %>
+
+            <!-- Image Carousel -->
+            <% if (package.image && package.image.length > 0) { %>
+                <h3 class="mt-4 text-primary">Gallery</h3>
+                <div id="packageCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <% package.image.forEach((img, index) => { %>
+                            <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                                <img src="<%= img.url %>" class="d-block w-100" alt="Package Image">
+                            </div>
+                        <% }); %>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#packageCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#packageCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                    </button>
+                </div>
+            <% } %>
+
+            <!-- Itinerary Section -->
+            <h3 class="mt-5 text-primary">Itinerary</h3>
+            <div class="mt-3">
+                <% package.itinerary.forEach(day => { %>
+                    <div class="itinerary-card">
+                        <strong>Day <%= day.day %>:</strong> <%= day.activity %>
+                    </div>
+                <% }); %>
+            </div>
+
+            <h5 class="mt-5 text-muted">Sharing transport info soon...</h5>
+
+            <form action="/confirm-bookings" method="get">
+                <button type="submit" class="btn btn-danger">Book Now</button>
+            </form>
+
+            <% if (user.isAdmin) { %>
+                <form action="/packages/<%= package._id %>?_method=DELETE" method="POST" class="mt-3">
+                    <button type="submit" class="btn btn-danger">Delete Package</button>
+                </form>
+            <% } %>
+                <br>
+                
+            <form action="/packages">
+            <button type="submit" class="btn btn-outline-danger">Back to Home</button>
+        </form>
+
+            
+           
+        </div>
+
+    </main>
+</body>
+<br>
+<br>
+<br>

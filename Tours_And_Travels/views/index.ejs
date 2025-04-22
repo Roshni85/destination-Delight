@@ -1,0 +1,206 @@
+<% layout("/layout/layout.ejs") %>
+<link rel="stylesheet" href="/css/popular_destination.css">
+<body>
+    <header class="hero-section text-center">
+        <img src="/assets/Rectangle.png" class="img-fluid" style="width: 90%;">
+
+        <h1>Trips You’ll <span class="text-danger">Love</span>, Prices You’ll <span class="text-danger">Adore</span>!</h1>
+        <p>Start Your Next Adventure Here!</p>
+    </header>
+
+    <section class="search-section container mt-4">
+        <form action="/filter-packages" method="GET" class="search-form p-4 shadow rounded d-flex align-items-center" style="background: white; border-radius: 10px;">
+            <div class="flex-grow-1 me-2">
+                <label for="destination" class="form-label fw-bold">Destination</label>
+                <input type="text" name="destination" id="destination" class="form-control" placeholder="Location, region, or city" style="background: #ffe6e6; border: none; border-radius: 8px;">
+            </div>
+            <div class="flex-grow-1 me-2">
+                <label for="minPrice" class="form-label fw-bold">Min Price</label>
+                <input type="text" name="minPrice" id="minPrice" class="form-control" placeholder="100$" style="background: #ffe6e6; border: none; border-radius: 8px;">
+            </div>
+            <div class="flex-grow-1 me-2">
+                <label for="maxPrice" class="form-label fw-bold">Max Price</label>
+                <input type="text" name="maxPrice" id="maxPrice" class="form-control" placeholder="5000$" style="background: #ffe6e6; border: none; border-radius: 8px;">
+            </div>
+            <button type="submit" class="btn btn-danger" style="border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </section>
+    
+
+    <section class="container mt-5">
+        <h2 class="mb-4">Special Offers</h2>
+        <div class="row">
+            <% if (specialOffers.length > 0) { %>
+                <% specialOffers.forEach(package => { %>
+                    <div class="col-md-4 mb-4 d-flex justify-content-center">
+                        <a href="/packages/<%= package._id %>" style="text-decoration: none;">
+                            <div class="card position-relative" style="width: 18rem; height: 22rem; border-radius: 20px; overflow: hidden; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.50); display: flex; flex-direction: column; justify-content: flex-end;">
+        
+                                <!-- Dark Overlay -->
+                                <div class="overlay position-absolute w-100 h-100" style="background: rgba(0, 0, 0, 0.); top: 0; left: 0;"></div>
+                                
+                                <!-- Package Image -->
+                                <img src="<%= package.image[0].url %>" class="card-img-top" style="height: 100%; object-fit: cover;" alt="...">
+                                
+                                <!-- Card Content (Floating on Image) -->
+                                <div class="card-body position-absolute w-100 text-white" style="bottom: 10px; left: 0; padding: 15px;">
+                                    <h5 class="package-name" style="font-weight: bold; margin-bottom: 5px;  color:black;">
+                                        <%= package.name %>
+                                    </h5>
+                                    <p class="text-muted text-light" style="font-size: 14px; margin-bottom: 0;">
+                                        <%= package.description %>
+                                    </p>
+                                    
+                                    <!-- Arrow Icon -->
+                                    <div class="arrow-icon position-absolute" style="bottom: 10px; right: 15px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border: 2px solid black; border-radius: 50%; font-size: 18px; color: black; font-size: 30px;">
+                                        🡥
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p class="text-center">No special offers available.</p>
+            <% } %>
+        </div>
+        
+        
+        
+        
+
+       
+      
+    </section>
+
+    <section class="container mt-5">
+        <h2 class="mb-4">Popular Destinations</h2>
+        <div class="row g-4">
+            <% if (popularDestinations && popularDestinations.length > 0) { %>
+            <!-- Large Card (Left) -->
+            <div class="col-md-6">
+                <a href="/packages/<%= popularDestinations[0]._id %>" style="text-decoration: none;">
+                    <div class="card position-relative" style="height: 400px; border-radius: 20px; overflow: hidden; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
+                        
+                        <!-- Dark Overlay -->
+                        <div class="overlay position-absolute w-100 h-100" style="background: rgba(0, 0, 0, 0.3); top: 0; left: 0;"></div>
+    
+                        <!-- Image -->
+                        <img src="<%= popularDestinations[0].image[0].url %>" class="card-img-top" style="height: 100%; object-fit: cover;" alt="...">
+    
+                        <!-- Floating Title -->
+                        <div class="position-absolute" style="top: 10px; left: 15px; background: rgba(0, 0, 0, 0.6); padding: 5px 10px; border-radius: 5px;">
+                            <h5 style="font-weight: bold; color: white; margin-bottom: 0; font-size: 18px;">
+                                <%= popularDestinations[0].name %>
+                            </h5>
+                        </div>
+                        
+                        <!-- Card Content -->
+                        <div class="card-body position-absolute w-100 text-white" style="bottom: 10px; left: 0; padding: 15px;">
+                            <p class="text-muted text-light" style="font-size: 14px; margin-bottom: 0;">
+                                <%= popularDestinations[0].description %>
+                            </p>
+    
+                            <!-- Arrow Icon -->
+                            <div class="arrow-icon position-absolute" style="bottom: 10px; right: 15px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border: 2px solid black; border-radius: 50%; font-size: 18px; color: black; font-size: 30px;">
+                                🡥
+                            </div>
+                        </div>
+    
+                    </div>
+                </a>
+            </div>
+            <% } else { %>
+                <p class="text-center">No popular destinations available.</p>
+            <% } %>
+    
+            <!-- Right Column (3 Smaller Cards) -->
+            <div class="col-md-6">
+                <div class="row g-4">
+                    <% if (popularDestinations && popularDestinations.length > 0) { %>
+                    <% popularDestinations.slice(1, 4).forEach(package => { %>
+                    <div class="col-md-6">
+                        <a href="/packages/<%= package._id %>" style="text-decoration: none;">
+                            <div class="card position-relative" style="height: 190px; border-radius: 20px; overflow: hidden; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
+                                
+                                <!-- Dark Overlay -->
+                                <div class="overlay position-absolute w-100 h-100" style="background: rgba(0, 0, 0, 0.3); top: 0; left: 0;"></div>
+    
+                                <!-- Image -->
+                                <img src="<%= package.image[0].url %>" class="card-img-top" style="height: 100%; object-fit: cover;" alt="...">
+    
+                                <!-- Floating Title -->
+                                <div class="position-absolute" style="top: 10px; left: 15px; background: rgba(0, 0, 0, 0.6); padding: 5px 10px; border-radius: 5px;">
+                                    <h5 style="font-weight: bold; color: white; margin-bottom: 0; font-size: 14px;">
+                                        <%= package.name %>
+                                    </h5>
+                                </div>
+    
+                                <!-- Card Content -->
+                                <div class="card-body position-absolute w-100 text-white" style="bottom: 10px; left: 0; padding: 10px;">
+                                    <p class="text-muted text-light" style="font-size: 12px; margin-bottom: 0;">
+                                        <%= package.description %>
+                                    </p>
+    
+                                    <!-- Arrow Icon -->
+                                    <div class="arrow-icon position-absolute" style="bottom: 10px; right: 15px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border: 2px solid black; border-radius: 50%; font-size: 18px; color: black; font-size: 30px;">
+                                        🡥
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </a>
+                    </div>
+                    <% }); %>
+                    <% }  %>
+                        
+                </div>
+            </div>
+    
+        </div>
+    </section>
+    
+
+    <div class="d-flex justify-content-end me-5 mt-4">
+    <a href="/allPackages" class="explore-btn">
+        Explore <span class="arrow"> 🡥</span>
+    </a>
+</div>
+
+<section class="container mt-5">
+    <h2 class="mb-4 text-dark">Why Choose Us?</h2>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="p-4 rounded" style="background-color: #FFEFEF;">
+                <h5 class="fw-bold text-dark">Best Price Guarantee</h5>
+                <p class="text-muted mb-0">Find a lower price? We'll match it and give you an additional 10% Off.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-4 rounded" style="background-color: #FFEFEF;">
+                <h5 class="fw-bold text-dark">24/7 Support</h5>
+                <p class="text-muted mb-0">Our customer support team is available around the clock to assist you.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-4 rounded" style="background-color: #FFEFEF;">
+                <h5 class="fw-bold text-dark">Flexible Booking</h5>
+                <p class="text-muted mb-0">Change your plans with free cancellation up to 48 hours before departure.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-4 rounded" style="background-color: #FFEFEF;">
+                <h5 class="fw-bold text-dark">Verified Reviews</h5>
+                <p class="text-muted mb-0">All reviews come from verified travelers who experienced our tours.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+<br>
+<br>
+
+</body>
+</html>
